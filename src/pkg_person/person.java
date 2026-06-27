@@ -1,5 +1,6 @@
 package pkg_person;
-
+import javax.naming.Name;
+import java.util.regex.Pattern;
 abstract public class person {//as we are not gonna create object of this class, we are making this abstract class
     protected String Name;
     protected String Email;
@@ -7,13 +8,6 @@ abstract public class person {//as we are not gonna create object of this class,
     protected String Address;
     protected String Dob;
 
-    public person(String name, String email, String phoneNo, String address, String dob) {
-        Name = name;
-        Email = email;
-        PhoneNo = phoneNo;
-        Address = address;
-        Dob = dob;
-    }
 
 
     public String getName() {
@@ -21,8 +15,15 @@ abstract public class person {//as we are not gonna create object of this class,
     }
 
     public void setName(String name) {
-        Name = name;
+        boolean isValidName = Pattern.matches("[a-zA-z]+", name);
+        if (isValidName) {
+            this.Name = name;
+        }
+        else {
+            this.Name="default name";
+        }
     }
+
 
     public String getEmail() {
         return Email;
@@ -53,7 +54,18 @@ abstract public class person {//as we are not gonna create object of this class,
     }
 
     public void setDob(String dob) {
-        Dob = dob;
+        boolean isValidDob=Pattern.matches("\\d{2}-\\d{2}-\\d{4}+",dob);
+        if(isValidDob){
+            this.Dob=dob;
+        }
+
+    }
+    public person(String name, String email, String phoneNo, String address, String dob) {
+        this.setName(name);//encapsulation
+        Email = email;
+        PhoneNo = phoneNo;
+        Address = address;
+        this.setDob(dob);
     }
 
     public person(){//default constructor

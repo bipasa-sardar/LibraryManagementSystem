@@ -1,0 +1,11 @@
+package pkg_exception;
+
+public class BookNotFoundException extends Exception{
+    public BookNotFoundException() {
+    }//checked exception
+
+    @Override
+    public String toString() {
+        return "BookNotFoundException is generated";
+    }
+}
