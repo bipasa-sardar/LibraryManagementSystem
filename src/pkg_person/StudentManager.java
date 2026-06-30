@@ -4,51 +4,82 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class StudentManager {
-    ObjectOutputStream oos_student =null;
-    ObjectInputStream ois_student =null;
-    File Student_file=null;
-    ArrayList<Student> Student_list =null;
-    public StudentManager(){
-        Student_file=new File("Student.dat");
-        Student_list=new ArrayList<Student>();
+    ObjectOutputStream oos_student = null;
+    ObjectInputStream ois_student = null;
+    File Student_file = null;
+    ArrayList<Student> Student_list = null;
 
-        if(Student_file.exists()){
+    public StudentManager() {
+        Student_file = new File("Student.dat");
+        Student_list = new ArrayList<Student>();
+
+        if (Student_file.exists()) {
             try {
-                ois_student=new ObjectInputStream(new FileInputStream(Student_file));
-                Student_list= (ArrayList<Student>) ois_student.readObject();
-            }catch (IOException e){
+                ois_student = new ObjectInputStream(new FileInputStream(Student_file));
+                Student_list = (ArrayList<Student>) ois_student.readObject();
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            catch (ClassNotFoundException e){
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
         }
 
     }
-    public void addAStudent(Student student){
+
+    public void addAStudent(Student student) {
         Student_list.add(student);
     }
-    public Student get(int RollNo){
-        for(Student s : Student_list){
-            if(s.getRollNo()==RollNo) return s;
+
+    public Student get(int RollNo) {
+        for (Student s : Student_list) {
+            if (s.getRollNo() == RollNo) return s;
         }
         return null;
     }
-    public void ViewAllStudent(){
-        for(Student s :Student_list){
+
+    public void ViewAllStudent() {
+        for (Student s : Student_list) {
             System.out.println(s);
         }
     }
-    public boolean deleteStudent(int delete_RollNo){
-        ListIterator<Student> Student_iterator = ( ListIterator<Student>) Student_list.listIterator();
-        while(Student_iterator.hasNext()){
-            Student s=Student_iterator.next();
-            if(s.getRollNo()==delete_RollNo){
+
+    public boolean deleteStudent(int delete_RollNo) {
+        ListIterator<Student> Student_iterator = (ListIterator<Student>) Student_list.listIterator();
+        while (Student_iterator.hasNext()) {
+            Student s = Student_iterator.next();
+            if (s.getRollNo() == delete_RollNo) {
                 Student_list.remove(s);
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean updateStudent(int updatedRollNumber, String name, String email, String phoneNo, String address, String dob, int standard, String division) {
+        ListIterator<Student> Student_iterator = (ListIterator<Student>) Student_list.listIterator();
+        while (Student_iterator.hasNext()) {
+            Student s = Student_iterator.next();
+            if (s.getRollNo() == updatedRollNumber) {
+                s.setRollNo(updatedRollNumber);
+                s.setDivision(division);
+                s.setStandard(standard);
+                s.setAddress(address);
+                s.setDob(dob);
+                s.setEmail(email);
+                s.setName(name);
+                return true;
+            }
+        }
+        return false;
+    }
+    public void WriteToFile() throws IOException {
+        try {
+            oos_student = new ObjectOutputStream(new FileOutputStream(Student_file));
+            oos_student.writeObject(Student_list);
+        }
+        catch (IOException ioe){
+            ioe.printStackTrace();
+        }
     }
 }
